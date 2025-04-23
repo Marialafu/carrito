@@ -181,7 +181,6 @@ h2{
 }
 .dessert-picture{
   position: relative;
-  height: 13.25rem;
   border-radius: var(--border-radius-s);
 }
 .card-button{
@@ -223,7 +222,6 @@ h2{
 }
 @media screen and (min-width: 1200px) {
   .dessert-picture{
-    height: 15rem;
     border-radius: var(--border-radius-m);
   }
 }
