@@ -3,47 +3,122 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Desserts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
 
-    <header>
+    <header class="header-container">
       <h1>Desserts</h1>
     </header>
     <main>
 
-      <section class="filter-buttons-group">
-        <button class="filter-button">Default</button>
-        <button class="filter-button">Name</button>
-        <button class="filter-button">Price</button>
-      </section>
+        <section class="filter-buttons-container">
+          <button class="filter-button button button-selected">Default</button>
+          <button class="filter-button button">Name</button>
+          <button class="filter-button button">Price</button>
+        </section>
 
-      <section class="desserts-grid">
-        <article class="dessert-card">
-          <picture>
-            <source media="(min-width: 1400px)" srcset="./assets/images/desktop/image-baklava-desktop.jpg">
-            <source media="(min-width: 768px)" srcset="./assets/images/tablet/image-baklava-tablet.jpg">
-            <source media="(min-width: 360px)" srcset="./assets/images/mobile/image-baklava-mobile.jpg">
-            <img src="./assets/images/mobile/image-baklava-mobile.jpg" alt="">
-          </picture>
-          <button>
-            <img src="./assets/images/icons/icon-add-to-cart.svg" alt="">
-            Add to Cart
-          </button>
-          <button>
-            <img src="./assets/images/icons/icon-decrement-quantity.svg" alt="">
-            Número añadido
-            <img src="./assets/images/icons/icon-increment-quantity.svg" alt="">
-          </button>
-        </article>
-      </section>
+      <section class="cards-and-cart-container">
 
-      <section class="cart-group">
+        <section class="desserts-grid">
+          <article class="dessert-card">
+            <div class="top-card">
+            <picture>
+              <source media="(min-width: 1400px)" srcset="./assets/images/desktop/image-baklava-desktop.jpg">
+              <source media="(min-width: 768px)" srcset="./assets/images/tablet/image-baklava-tablet.jpg">
+              <source media="(min-width: 360px)" srcset="./assets/images/mobile/image-baklava-mobile.jpg">
+              <img src="./assets/images/mobile/image-baklava-mobile.jpg" alt="" class="dessert-picture">
+            </picture>
+
+            <button class="button add-to-cart-button card-button">
+              <img src="./assets/images/icons/icon-add-to-cart.svg" alt="">
+              Add to Cart
+            </button>
+
+            <button class="button button-selected card-button add-eliminate-to-cart-button hide">
+              <img class="circle" src="./assets/images/icons/icon-decrement-quantity.svg" alt="imagen del menos">
+              Número
+              <img class="circle" src="./assets/images/icons/icon-increment-quantity.svg" alt="imagen del +">
+            </button>
+            </div>
+
+            <div class="bottom-card">
+              <p class="category-text">Waffle</p>
+              <p class="text">Waffle with Berries</p>
+              <p class="text featured-text">Price</p>
+            </div>
+            
+          </article>
+          <article class="dessert-card">
+            <div class="top-card">
+            <picture>
+              <source media="(min-width: 1400px)" srcset="./assets/images/desktop/image-baklava-desktop.jpg">
+              <source media="(min-width: 768px)" srcset="./assets/images/tablet/image-baklava-tablet.jpg">
+              <source media="(min-width: 360px)" srcset="./assets/images/mobile/image-baklava-mobile.jpg">
+              <img src="./assets/images/mobile/image-baklava-mobile.jpg" alt="" class="dessert-picture">
+            </picture>
+
+            <button>
+              <img src="./assets/images/icons/icon-add-to-cart.svg" alt="">
+              Add to Cart
+            </button>
+
+            <button>
+              <img class="image" src="./assets/images/icons/icon-decrement-quantity.svg" alt="imagen del menos">
+              Número añadido
+              <img src="./assets/images/icons/icon-increment-quantity.svg" alt="imagen del +">
+            </button>
+            </div>
+
+            <div class="botton-card">
+              <p class="dessert-category">Waffle</p>
+              <p class="dessert-name">Waffle with Berries</p>
+              <p class="dessert-price">Price</p>
+            </div>
+            
+          </article>
+          <article class="dessert-card">
+            <div class="top-card">
+            <picture>
+              <source media="(min-width: 1400px)" srcset="./assets/images/desktop/image-baklava-desktop.jpg">
+              <source media="(min-width: 768px)" srcset="./assets/images/tablet/image-baklava-tablet.jpg">
+              <source media="(min-width: 360px)" srcset="./assets/images/mobile/image-baklava-mobile.jpg">
+              <img src="./assets/images/mobile/image-baklava-mobile.jpg" alt="" class="dessert-picture">
+            </picture>
+
+            <button>
+              <img src="./assets/images/icons/icon-add-to-cart.svg" alt="">
+              Add to Cart
+            </button>
+
+            <button>
+              <img class="image" src="./assets/images/icons/icon-decrement-quantity.svg" alt="imagen del menos">
+              Número añadido
+              <img src="./assets/images/icons/icon-increment-quantity.svg" alt="imagen del +">
+            </button>
+            </div>
+
+            <div class="botton-card">
+              <p class="dessert-category">Waffle</p>
+              <p class="dessert-name">Waffle with Berries</p>
+              <p class="dessert-price">Price</p>
+            </div>
+            
+          </article>
+        </section>
+
+      <section class="cart-container">
         <h2>Your Cart (0)</h2>
+        <div class="empty-cart-container">
         <img src="./assets/images/icons/illustration-empty-cart.svg" alt="">
-        <p>Your added items will appear here</p>
+        <p class="subtitle">Your added items will appear here</p>
       </section>
+      </div>
+    </section>
 
     </main>
 

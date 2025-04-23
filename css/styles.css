@@ -1,3 +1,30 @@
+/* he tenido que poner en todo margin 0, eso está bien? */
+/* El alto de your cart se hace igual que el de los cards, como puedo hacer para que por defecto sea su tamaño y luego crezca cuando le meta cosas. Ahora se queda bien por el margin bottom, pero funciona así? */
+
+
+:root{
+  --font-family: "Red Hat Text", sans-serif;
+  --title-m: 2.5rem;
+  --title-s: 1.5rem;
+  --text-m: 1rem;
+  --text-s: 0.875rem;
+
+  --bold: 700;
+  --semibold: 600;
+  --regular: 400;
+
+  --background-color: #FCF8F6;
+  --primary-color: #260F08;
+  --secondary-color: white;
+  --terciary-color: #87635A;
+  --featured-items: #C73B0F;
+
+  --border-radius-l: 6.25rem;
+  --border-radius-m: 0.75rem;
+  --border-radius-s: 0.5rem;
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -20,5 +47,209 @@ nav ul {
 }
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  padding: 0 1.5rem;
+}
+@media screen and (min-width: 768px) {
+  body{
+    padding: 0 2.5rem;
+  }
+}
+@media screen and (min-width: 1200px) {
+  body{
+    padding: 0 7rem;
+  }
+}
+
+
+/* TEXTOS */
+h1{
+  font-size: var(--title-m);
+  font-weight: var(--bold);
+  color: var(--primary-color);
+  margin: 0;
+}
+h2{
+  font-size: var(--title-s);
+  font-weight: var(--bold);
+  color: var(--featured-items);
+  margin: 0;
+  padding-bottom: 1.5rem;
+}
+.subtitle{
+  font-size: var(--text-s);
+  font-weight: var(--semibold);
+  color: var(--terciary-color);
+  margin: 0;
+}
+.text{
+  font-size: var(--text-m);
+  font-weight: var(--semibold);
+  color: var(--primary-color);
+  margin: 0;
+}
+.featured-text{
+  color: var(--featured-items);
+}
+.category-text{
+  font-size: var(--text-s);
+  font-weight: var(--regular);
+  color: var(--terciary-color);
+  margin: 0;
+}
+
+/* BUTTONS */
+.button{
+  font-family: inherit;
+  font-weight: var(--semibold);
+  font-size: var(--text-s);
+  border-radius: var(--border-radius-l);
+  border: 0.0625rem solid var(--terciary-color);
+  background-color: var(--secondary-color);
+}
+.button-selected{
+  background-color: var(--featured-items);
+  color: var(--background-color);
+}
+
+
+/* BIG CONTAINERS */
+.header-container{
+  padding-top: 9rem;
+  padding-bottom: 2rem;
+}
+.filter-buttons-container{
+  display: flex;
+  gap: 1.1531rem;
+  padding-bottom: 1.625rem;
+}
+.cards-and-cart-container{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.desserts-grid{
+  display: grid;
+  gap: 1.5rem;
+}
+@media screen and (min-width: 768px) {
+  .header-container{
+    padding-top: 6.5625rem;
+  }
+  .filter-buttons-container{
+    gap: 1.2063rem;
+    padding-bottom: 2rem;
+  }
+  .cards-and-cart-container{
+    gap: 4.9375rem;
+  }
+  .desserts-grid{
+    grid-template-columns: repeat(3, 13.3331rem);
+    gap:2rem 1.5rem;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .header-container{
+    padding-top: 6.5625rem;
+  }
+  .filter-buttons-container{
+    gap: 1.5rem;
+    padding-bottom: 2.625rem;
+  }
+  .cards-and-cart-container{
+    flex-direction: row;
+    gap: 2rem;
+  }
+  .desserts-grid{
+    grid-template-columns: repeat(3, 15.6669rem);
+  }
+}
+
+/* FILTERS */
+.filter-button{
+  width: 4.8044rem;
+  height: 2.125rem;
+}
+@media screen and (min-width: 1200px) {
+  .filter-button{
+    width: 6.25rem;
+  }
+}
+
+/* DESSERTS CARDS */
+.dessert-card{
+  display: flex;
+  flex-direction: column;
+}
+/* IMAGEN Y AÑADIR CARRITO CARD */
+.top-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dessert-picture{
+  position: relative;
+  height: 13.25rem;
+  border-radius: var(--border-radius-s);
+}
+.card-button{
+  position: relative;
+  top: -25px;
+  display: flex;
+  align-items: center;
+  width: 10rem;
+  height: 2.75rem;
+  padding: 0.75rem;
+}
+.add-to-cart-button{
+  justify-content: center;
+  gap: 0.5rem;
+}
+.add-eliminate-to-cart-button{
+  justify-content: space-between;
+}
+/* COMO SE PODRÍA LLAMAR A ESTE ELEMENTO */
+.circle{
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid var(--secondary-color);
+  padding: 0.1875rem;
+  border-radius: var(--border-radius-l);
+}
+/* TEXTO CARD */
+.bottom-card{
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+@media screen and (min-width: 1200px) {
+  .dessert-picture{
+    height: 15rem;
+    border-radius: var(--border-radius-m);
+  }
+}
+
+/* YOUR CART */
+.cart-container{
+  padding: 1.5rem;
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius-m);
+  margin-bottom: 16.9375rem;
+}
+.empty-cart-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+@media screen and (min-width: 768px) {
+  .cart-container{
+    margin-bottom: 13.5rem;
+  }
+}
+
+/* ESCONDER / HIDE */
+.hide{
+  display: none;
 }
