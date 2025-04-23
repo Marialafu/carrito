@@ -1,5 +1,6 @@
 /* he tenido que poner en todo margin 0, eso está bien? */
 /* El alto de your cart se hace igual que el de los cards, como puedo hacer para que por defecto sea su tamaño y luego crezca cuando le meta cosas. Ahora se queda bien por el margin bottom, pero funciona así? */
+/* en el hover del + y el- como cambio la imagen */
 
 
 :root{
@@ -49,19 +50,7 @@ body {
   margin: 0;
   font-family: var(--font-family);
   background-color: var(--background-color);
-  padding: 0 1.5rem;
 }
-@media screen and (min-width: 768px) {
-  body{
-    padding: 0 2.5rem;
-  }
-}
-@media screen and (min-width: 1200px) {
-  body{
-    padding: 0 7rem;
-  }
-}
-
 
 /* TEXTOS */
 h1{
@@ -116,18 +105,18 @@ h2{
 
 /* BIG CONTAINERS */
 .header-container{
-  padding-top: 9rem;
-  padding-bottom: 2rem;
+  padding: 9rem 1.5rem 2rem 1.5rem;
 }
 .filter-buttons-container{
   display: flex;
   gap: 1.1531rem;
-  padding-bottom: 1.625rem;
+  padding: 0 1.5rem 1.625rem 1.5rem;
 }
 .cards-and-cart-container{
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  padding: 0 1.5rem;
 }
 .desserts-grid{
   display: grid;
@@ -135,14 +124,15 @@ h2{
 }
 @media screen and (min-width: 768px) {
   .header-container{
-    padding-top: 6.5625rem;
+    padding: 6.5625rem 2.5rem 0 2.5rem;
   }
   .filter-buttons-container{
     gap: 1.2063rem;
-    padding-bottom: 2rem;
+    padding: 0 2.5rem 2rem 2.5rem;
   }
   .cards-and-cart-container{
     gap: 4.9375rem;
+    padding: 0 2.5rem;
   }
   .desserts-grid{
     grid-template-columns: repeat(3, 13.3331rem);
@@ -151,15 +141,16 @@ h2{
 }
 @media screen and (min-width: 1200px) {
   .header-container{
-    padding-top: 6.5625rem;
+    padding: 6.5625rem 7rem 0 7rem;
   }
   .filter-buttons-container{
     gap: 1.5rem;
-    padding-bottom: 2.625rem;
+    padding: 0 7rem 2.625rem 7rem;
   }
   .cards-and-cart-container{
     flex-direction: row;
     gap: 2rem;
+    padding: 0 7rem;
   }
   .desserts-grid{
     grid-template-columns: repeat(3, 15.6669rem);
@@ -206,6 +197,10 @@ h2{
   justify-content: center;
   gap: 0.5rem;
 }
+.add-to-cart-button:hover{
+  color: var(--featured-items);
+  border: 0.0625rem solid var(--featured-items);
+}
 .add-eliminate-to-cart-button{
   justify-content: space-between;
 }
@@ -216,6 +211,9 @@ h2{
   border: 1px solid var(--secondary-color);
   padding: 0.1875rem;
   border-radius: var(--border-radius-l);
+}
+.circle:hover{
+  background-color: var(--secondary-color);
 }
 /* TEXTO CARD */
 .bottom-card{
