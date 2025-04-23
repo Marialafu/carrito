@@ -7,6 +7,46 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
+
+    <header>
+      <h1>Desserts</h1>
+    </header>
+    <main>
+
+      <section class="filter-buttons-group">
+        <button class="filter-button">Default</button>
+        <button class="filter-button">Name</button>
+        <button class="filter-button">Price</button>
+      </section>
+
+      <section class="desserts-grid">
+        <article class="dessert-card">
+          <picture>
+            <source media="(min-width: 1400px)" srcset="./assets/images/desktop/image-baklava-desktop.jpg">
+            <source media="(min-width: 768px)" srcset="./assets/images/tablet/image-baklava-tablet.jpg">
+            <source media="(min-width: 360px)" srcset="./assets/images/mobile/image-baklava-mobile.jpg">
+            <img src="./assets/images/mobile/image-baklava-mobile.jpg" alt="">
+          </picture>
+          <button>
+            <img src="./assets/images/icons/icon-add-to-cart.svg" alt="">
+            Add to Cart
+          </button>
+          <button>
+            <img src="./assets/images/icons/icon-decrement-quantity.svg" alt="">
+            Número añadido
+            <img src="./assets/images/icons/icon-increment-quantity.svg" alt="">
+          </button>
+        </article>
+      </section>
+
+      <section class="cart-group">
+        <h2>Your Cart (0)</h2>
+        <img src="./assets/images/icons/illustration-empty-cart.svg" alt="">
+        <p>Your added items will appear here</p>
+      </section>
+
+    </main>
+
     <script src="./js/scripts.js"></script>
   </body>
 </html>
