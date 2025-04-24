@@ -104,6 +104,7 @@ const PRODUCTS = [
   }
 ]
 let cartList = []
+let quantityValue = 1;
 
 const changeAddToCartButton = (event, product) => {
   let clickedElement = event.target
@@ -113,29 +114,60 @@ const changeAddToCartButton = (event, product) => {
   //Metemos la cantidad del producto en el objeto
   const quantityProduct = {...product, quantity: 1}
   cartList.push(quantityProduct)
+
   console.log(cartList);
+  
 }
 //evento de escucha en el botón que aparece, poner data set en la img para cuando le das que identifique y sume o reste según eso.
+
 const determineQuantity = (event, product) => {
-  console.log('hol');
+  let clickedName = event.target.dataset.quantity
+  if (!clickedName) return
+
+  let clickedElement = event.target
+  let completeButton = clickedElement.parentElement
+
+  let cartProduct = cartList.find(cartProduct => {
+    cartProduct.id === product.id
+    return cartProduct
+  })
+
+  //verificar que suma bien
+  if (clickedName === 'add'){
+    cartProduct.quantity += quantityValue
+  } else if (clickedName === 'remove'){
+    cartProduct.quantity -= quantityValue
+  }
   
+  if (cartProduct.quantity === 0){
+    completeButton.classList.add('hide')
+    completeButton.previousElementSibling.classList.remove('hide')
+    
 
-
+    //no me funciona bien el filtro. Quita todos.
+    const newCartList = cartList.filter(product => {
+     product.id !== cartProduct.id})
+    
+    console.log(newCartList);
+    
+  }
+  console.log(cartList, );
+  
 }
 
 const defineFilters = (event) => {
   let productsFiltered = [...PRODUCTS]
-  let clickedFilterName = event.target.dataset.filter
-  let clickedFilterElement = event.target
+  let clickedName = event.target.dataset.filter
+  let clickedElement = event.target
 
-  if (!clickedFilterName) return
+  if (!clickedName) return
   filtersContainerElement.querySelector('.button-selected').classList.remove('button-selected')
   
-  clickedFilterElement.classList.add('button-selected')
+  clickedElement.classList.add('button-selected')
 
-  if (clickedFilterName === 'name'){
+  if (clickedName === 'name'){
     productsFiltered.sort((a, b) => a.title.localeCompare(b.title))
-  } else if (clickedFilterName === 'price'){
+  } else if (clickedName === 'price'){
     productsFiltered.sort((a, b) => {
       return a.price - b.price;
     })
@@ -209,6 +241,7 @@ const addCardProduct = (productsList) => {
         const imgRemoveFromCart = document.createElement('img')
         imgRemoveFromCart.classList.add('circle')
         imgRemoveFromCart.src = './assets/images/icons/icon-decrement-quantity.svg'
+        imgRemoveFromCart.dataset.quantity = 'remove'
         addEliminateToCartButton.append(imgRemoveFromCart)
         
     
@@ -219,6 +252,7 @@ const addCardProduct = (productsList) => {
         const imgAddToCart = document.createElement('img')
         imgAddToCart.classList.add('circle')
         imgAddToCart.src = './assets/images/icons/icon-increment-quantity.svg'
+        imgAddToCart.dataset.quantity = 'add'
         addEliminateToCartButton.append(imgAddToCart)
         
         topCardGroup.addEventListener('click', event => determineQuantity(event, product))
