@@ -105,12 +105,22 @@ const PRODUCTS = [
 ]
 let cartList = []
 
-const addToCart = (event, product) => {
-  console.log(event.target);
+const changeAddToCartButton = (event, product) => {
+  let clickedElement = event.target
+  clickedElement.classList.add('hide')
+  clickedElement.nextSibling.classList.remove('hide')
+
+  //Metemos la cantidad del producto en el objeto
+  const quantityProduct = {...product, quantity: 1}
+  cartList.push(quantityProduct)
+  console.log(cartList);
+}
+//evento de escucha en el botón que aparece, poner data set en la img para cuando le das que identifique y sume o reste según eso.
+const determineQuantity = (event, product) => {
+  console.log('hol');
   
 
-  cartList.push(product)
-  console.log(cartList,);
+
 }
 
 const defineFilters = (event) => {
@@ -174,15 +184,17 @@ const addCardProduct = (productsList) => {
         
         const imgAddToCartButton = document.createElement('img')
         imgAddToCartButton.src = './assets/images/icons/icon-add-to-cart.svg'
+        imgAddToCartButton.classList.add('pointer-events')
         addToCartButton.append(imgAddToCartButton)
 
         const textAddToCartButton = document.createElement('span')
         textAddToCartButton.textContent = 'Add to Cart'
+        textAddToCartButton.classList.add('pointer-events')
         addToCartButton.append(textAddToCartButton)
         
         topCardGroup.append(addToCartButton)
 
-        addToCartButton.addEventListener('click', event => addToCart(event, product))
+        addToCartButton.addEventListener('click', event => changeAddToCartButton(event, product))
         //FIN BOTÓN ADD TO CART
 
         //BOTÓN SUMAR O RESTAR PRODUCTOS OCULTO
@@ -191,13 +203,14 @@ const addCardProduct = (productsList) => {
         addEliminateToCartButton.classList.add('button-selected')
         addEliminateToCartButton.classList.add('card-button')
         addEliminateToCartButton.classList.add('add-eliminate-to-cart-button')
-        //addEliminateToCartButton.classList.add('hide')
+        addEliminateToCartButton.classList.add('hide')
         
 
         const imgRemoveFromCart = document.createElement('img')
         imgRemoveFromCart.classList.add('circle')
         imgRemoveFromCart.src = './assets/images/icons/icon-decrement-quantity.svg'
         addEliminateToCartButton.append(imgRemoveFromCart)
+        
     
         const textAddEliminateToCartButton = document.createElement('span')
         textAddEliminateToCartButton.textContent = 'Número'
@@ -208,6 +221,7 @@ const addCardProduct = (productsList) => {
         imgAddToCart.src = './assets/images/icons/icon-increment-quantity.svg'
         addEliminateToCartButton.append(imgAddToCart)
         
+        topCardGroup.addEventListener('click', event => determineQuantity(event, product))
         topCardGroup.append(addEliminateToCartButton)
         // FIN BOTÓN SUMAR O RESTAR PRODUCTOS OCULTO
         

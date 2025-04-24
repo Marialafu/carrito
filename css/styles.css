@@ -249,3 +249,6 @@ h2{
 .hide{
   display: none;
 }
+.pointer-events{
+  pointer-events: none;
+}
