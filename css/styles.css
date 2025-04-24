@@ -1,7 +1,4 @@
-/* he tenido que poner en todo margin 0, eso está bien? */
-/* El alto de your cart se hace igual que el de los cards, como puedo hacer para que por defecto sea su tamaño y luego crezca cuando le meta cosas. Ahora se queda bien por el margin bottom, pero funciona así? */
-/* en el hover del + y el- como cambio la imagen */
-
+/* corregir scroll horizontal en móvil*/
 
 :root{
   --font-family: "Red Hat Text", sans-serif;
@@ -105,18 +102,19 @@ h2{
 
 /* BIG CONTAINERS */
 .header-container{
-  padding: 9rem 1.5rem 2rem 1.5rem;
+  padding: 9rem 1rem 2rem 1rem;
 }
 .filter-buttons-container{
   display: flex;
   gap: 1.1531rem;
-  padding: 0 1.5rem 1.625rem 1.5rem;
+  padding: 0 1rem 1.625rem 1rem;
 }
 .cards-and-cart-container{
   display: flex;
   flex-direction: column;
+  align-items: start;
   gap: 2rem;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 }
 .desserts-grid{
   display: grid;
@@ -161,6 +159,7 @@ h2{
 .filter-button{
   width: 4.8044rem;
   height: 2.125rem;
+  cursor: pointer;
 }
 @media screen and (min-width: 1200px) {
   .filter-button{
@@ -210,9 +209,10 @@ h2{
   border: 1px solid var(--secondary-color);
   padding: 0.1875rem;
   border-radius: var(--border-radius-l);
+  cursor: pointer;
 }
 .circle:hover{
-  background-color: var(--secondary-color);
+  background-color: var(--terciary-color);
 }
 /* TEXTO CARD */
 .bottom-card{

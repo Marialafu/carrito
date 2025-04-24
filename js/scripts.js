@@ -1,7 +1,8 @@
+const filtersContainerElement = document.getElementById('filter-buttons-container')
 const productsGrid = document.getElementById('desserts-grid')
 
 
-const productsOriginalList = [
+const PRODUCTS = [
   {
     id: '362eb9c8-7d07-476a-891c-7ff627e77070',
     name: 'Waffle',
@@ -102,13 +103,46 @@ const productsOriginalList = [
     alt: 'Two crystal jars of panna cotta with cream.'
   }
 ]
+let cartList = []
 
-const addCardProduct = () => {
-    productsOriginalList.forEach(product => {
+const addToCart = (event, product) => {
+  console.log(event.target);
+  
+
+  cartList.push(product)
+  console.log(cartList,);
+}
+
+const defineFilters = (event) => {
+  let productsFiltered = [...PRODUCTS]
+  let clickedFilterName = event.target.dataset.filter
+  let clickedFilterElement = event.target
+
+  if (!clickedFilterName) return
+  filtersContainerElement.querySelector('.button-selected').classList.remove('button-selected')
+  
+  clickedFilterElement.classList.add('button-selected')
+
+  if (clickedFilterName === 'name'){
+    productsFiltered.sort((a, b) => a.title.localeCompare(b.title))
+  } else if (clickedFilterName === 'price'){
+    productsFiltered.sort((a, b) => {
+      return a.price - b.price;
+    })
+  }
+  
+  addCardProduct(productsFiltered)
+}
+
+const addCardProduct = (productsList) => {
+    let fragment = document.createDocumentFragment()
+
+    productsGrid.textContent = ''
+    productsList.forEach(product => {
         
         const article = document.createElement('article')
         article.classList.add('dessert-card')
-        article.id = product.id
+        //ver donde tengo que poner el id para que identifique bien el producto.
         
         //PARTE SUPERIOR CARD
         const topCardGroup = document.createElement('div')
@@ -147,6 +181,8 @@ const addCardProduct = () => {
         addToCartButton.append(textAddToCartButton)
         
         topCardGroup.append(addToCartButton)
+
+        addToCartButton.addEventListener('click', event => addToCart(event, product))
         //FIN BOTÓN ADD TO CART
 
         //BOTÓN SUMAR O RESTAR PRODUCTOS OCULTO
@@ -155,8 +191,8 @@ const addCardProduct = () => {
         addEliminateToCartButton.classList.add('button-selected')
         addEliminateToCartButton.classList.add('card-button')
         addEliminateToCartButton.classList.add('add-eliminate-to-cart-button')
-        //meter un evento de escucha que lleve a una función para hide.
         //addEliminateToCartButton.classList.add('hide')
+        
 
         const imgRemoveFromCart = document.createElement('img')
         imgRemoveFromCart.classList.add('circle')
@@ -200,34 +236,17 @@ const addCardProduct = () => {
         //FIN PARTE INFERIOR CARD
 
         article.append(bottomCardGroup)
-
-        productsGrid.append(article)
-        console.log('hola');
-        
+        fragment.append(article)
+        productsGrid.append(fragment)
     })
 }
-addCardProduct()
 
-//<article class="dessert-card">
-/* <div class="top-card">
+const addProductToYourCart = () => {
+  let fragment = document.createDocumentFragment()
+  productsGrid.textContent = ''
+}
 
+addCardProduct(PRODUCTS)
 
-<button class="button add-to-cart-button card-button">
-  <img src="./assets/images/icons/icon-add-to-cart.svg" alt="">
-  Add to Cart
-</button>
+filtersContainerElement.addEventListener('click', defineFilters)
 
-<button class="button button-selected card-button add-eliminate-to-cart-button hide">
-  <img class="circle" src="./assets/images/icons/icon-decrement-quantity.svg" alt="imagen del menos">
-  Número
-  <img class="circle" src="./assets/images/icons/icon-increment-quantity.svg" alt="imagen del +">
-</button>
-</div>
-
-<div class="bottom-card">
-  <p class="category-text">Waffle</p>
-  <p class="text">Waffle with Berries</p>
-  <p class="text featured-text">Price</p>
-</div>
-
-</article> */
