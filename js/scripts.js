@@ -107,51 +107,48 @@ let cartList = []
 let quantityValue = 1;
 
 const changeAddToCartButton = (event, product) => {
-  let clickedElement = event.target
-  clickedElement.classList.add('hide')
-  clickedElement.nextSibling.classList.remove('hide')
+  let buttonClickedElement = event.target
+  let textButtonElement = buttonClickedElement.nextSibling.children[1]
 
-  //Metemos la cantidad del producto en el objeto
-  const quantityProduct = {...product, quantity: 1}
-  cartList.push(quantityProduct)
+  buttonClickedElement.classList.add('hide')
+  buttonClickedElement.nextSibling.classList.remove('hide')
+  textButtonElement.textContent = quantityValue
 
-  console.log(cartList);
-  
+  const addQuantityProduct = {...product, quantity: 1}
+  cartList.push(addQuantityProduct)
 }
-//evento de escucha en el botón que aparece, poner data set en la img para cuando le das que identifique y sume o reste según eso.
 
 const determineQuantity = (event, product) => {
-  let clickedName = event.target.dataset.quantity
-  if (!clickedName) return
-
-  let clickedElement = event.target
-  let completeButton = clickedElement.parentElement
-
-  let cartProduct = cartList.find(cartProduct => {
-    cartProduct.id === product.id
-    return cartProduct
+  let buttonClickedName = event.target.dataset.quantity
+  let buttonClickedElement = event.target
+  let holeButton = buttonClickedElement.parentElement
+  
+  if (!buttonClickedName) return
+  
+  const foundProduct = cartList.find(cartProduct => {
+    if (cartProduct.id === product.id) return cartProduct
   })
 
-  //verificar que suma bien
-  if (clickedName === 'add'){
-    cartProduct.quantity += quantityValue
-  } else if (clickedName === 'remove'){
-    cartProduct.quantity -= quantityValue
+  if (buttonClickedName === 'add'){
+    foundProduct.quantity += quantityValue
+  } else if (buttonClickedName === 'remove'){
+    foundProduct.quantity -= quantityValue
   }
+  holeButton.children[1].textContent = foundProduct.quantity
   
-  if (cartProduct.quantity === 0){
-    completeButton.classList.add('hide')
-    completeButton.previousElementSibling.classList.remove('hide')
-    
-
-    //no me funciona bien el filtro. Quita todos.
-    const newCartList = cartList.filter(product => {
-     product.id !== cartProduct.id})
-    
-    console.log(newCartList);
-    
+  if (foundProduct.quantity === 0){
+    holeButton.classList.add('hide')
+    holeButton.previousElementSibling.classList.remove('hide')
+    cartList.filter(product => {
+      if (product !== foundProduct) return product
+  })
   }
-  console.log(cartList, );
+    //no me funciona bien el filtro. Quita todos.
+  
+    
+    console.log(cartList);
+    
+  // }
   
 }
 
@@ -172,7 +169,6 @@ const defineFilters = (event) => {
       return a.price - b.price;
     })
   }
-  
   addCardProduct(productsFiltered)
 }
 
