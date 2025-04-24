@@ -1,4 +1,5 @@
-/* corregir scroll horizontal en móvil*/
+/* le pongo width al container de la cart y no se pone ancho */
+/* no entiendo como se ponen las lineas de abajo que salen con el carrito, full-cart-container */
 
 :root{
   --font-family: "Red Hat Text", sans-serif;
@@ -63,6 +64,12 @@ h2{
   margin: 0;
   padding-bottom: 1.5rem;
 }
+.title-s{
+  font-size: var(--text-s);
+  font-weight: var(--semibold);
+  color: var(--primary-color);
+  margin: 0;
+}
 .subtitle{
   font-size: var(--text-s);
   font-weight: var(--semibold);
@@ -115,6 +122,7 @@ h2{
   align-items: start;
   gap: 2rem;
   padding: 0 1rem;
+  width: 20.4375rem;
 }
 .desserts-grid{
   display: grid;
@@ -206,10 +214,13 @@ h2{
 .circle{
   width: 1.25rem;
   height: 1.25rem;
-  border: 1px solid var(--secondary-color);
+  border: 0.0625rem solid var(--secondary-color);
   padding: 0.1875rem;
   border-radius: var(--border-radius-l);
   cursor: pointer;
+}
+.brown-circle{
+  border: 0.0625rem solid var(--terciary-color);
 }
 .circle:hover{
   background-color: var(--terciary-color);
@@ -243,6 +254,29 @@ h2{
   .cart-container{
     margin-bottom: 13.5rem;
   }
+}
+
+/* FULL YOUR CART */
+.full-cart-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 0.125rem solid var(--background-color);
+}
+.text-full-cart-container{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.subtitle-full-cart-container{
+  display: flex;
+  gap: 0.5rem;
+}
+.eliminate-button-full-cart-container{
+  background-image: url(../assets/images/icons/icon-remove-item.svg);
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* ESCONDER / HIDE */
