@@ -159,14 +159,13 @@ const defineIfProductIsInCart = (product) => {
   cartList.find(cartProduct => {
     if (cartProduct.id === product.id){
       console.log('hola');
-      console.log(product);
+      return true
       
+    } else {console.log('adios');
+      return false
     }
-  })
-  
-  
-    //hide al bottón de add to cart
-  //hide al botón de sumar y restar 
+    })
+    
     
 }
 
@@ -227,7 +226,11 @@ const addCardProduct = (productsList) => {
         addToCartButton.classList.add('button')
         addToCartButton.classList.add('add-to-cart-button')
         addToCartButton.classList.add('card-button')
-        defineIfProductIsInCart(product)
+        let productInCart = defineIfProductIsInCart(product)
+        if (productInCart){addToCartButton.classList.add('hide')}
+
+        console.log(productInCart);
+        
         
         const imgAddToCartButton = document.createElement('img')
         imgAddToCartButton.src = './assets/images/icons/icon-add-to-cart.svg'
@@ -250,7 +253,7 @@ const addCardProduct = (productsList) => {
         addEliminateToCartButton.classList.add('button-selected')
         addEliminateToCartButton.classList.add('card-button')
         addEliminateToCartButton.classList.add('add-eliminate-to-cart-button')
-        defineIfProductIsInCart(product)
+        if (!productInCart){addEliminateToCartButton.classList.add('hide')}
         
 
         const imgRemoveFromCart = document.createElement('img')
@@ -285,7 +288,7 @@ const addCardProduct = (productsList) => {
         const priceText = document.createElement('p')
         priceText.classList.add('text')
         priceText.classList.add('featured-text')
-        priceText.textContent = `$${product.price}`
+        priceText.textContent = `$${product.price.toFixed(2)}`
         bottomCardGroup.prepend(priceText)
         
         const productText = document.createElement('p')
