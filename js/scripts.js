@@ -1,6 +1,6 @@
 const filtersContainerElement = document.getElementById('filter-buttons-container')
 const productsGrid = document.getElementById('desserts-grid')
-
+const cartContainerElement = document.getElementById('cart-container')
 
 const PRODUCTS = [
   {
@@ -104,61 +104,47 @@ const PRODUCTS = [
   }
 ]
 let cartList = []
-let quantityValue = 1;
-
-const productQuantity = (product) => {
-
-  const addedQuantityProduct = {...product, quantity: 0}
-  return product.quantity
-  
-}
 
 const changeAddToCartButton = (event, product) => {
   let buttonClickedElement = event.target
   let textButtonElement = buttonClickedElement.nextSibling.children[1]
-  
-  quantityValue = 1
-  product.quantity = quantityValue
 
   buttonClickedElement.classList.add('hide')
   buttonClickedElement.nextSibling.classList.remove('hide')
-  textButtonElement.textContent = product.quantity
+  textButtonElement.textContent = 1;
 
-  cartList.push(product)
+  cartList.push({...product, quantity:1})
+  generateFullCart()
 }
 
 const addQuantity = (event, product) => {
-  let addButtonClicked = event.target.dataset.quantity
   let addButtonElement = event.target
   let holeButton = addButtonElement.parentElement
   
   const foundProduct = cartList.find(cartProduct => 
     cartProduct.id === product.id)
 
-  if (addButtonClicked === 'add'){
-    foundProduct.quantity += quantityValue
-  }
+  foundProduct.quantity ++
   holeButton.children[1].textContent = foundProduct.quantity
+  generateFullCart()
 }
 
 const removeQuantity = (event, product) => {
-  let removeButtonClicked = event.target.dataset.quantity
   let removeButtonElement = event.target
   let holeButton = removeButtonElement.parentElement
 
   const foundProduct = cartList.find(cartProduct => 
     cartProduct.id === product.id)
 
-  if (removeButtonClicked === 'remove'){
-    foundProduct.quantity --
-  }
+  foundProduct.quantity --
   holeButton.children[1].textContent = foundProduct.quantity
   
   if (foundProduct.quantity === 0){
     holeButton.classList.add('hide')
     holeButton.previousElementSibling.classList.remove('hide')
     cartList = cartList.filter(product => product.id !== foundProduct.id)
-  }
+    generateEmptyCart()
+  } else {generateFullCart()}
 }
 
 const defineIfProductIsInCart = (product) => {
@@ -258,7 +244,11 @@ const addCardProduct = (productsList) => {
         
     
         const textAddEliminateToCartButton = document.createElement('span')
-        textAddEliminateToCartButton.textContent = productQuantity(product)
+        if (productInCart) {
+          textAddEliminateToCartButton.textContent = productInCart.quantity;
+        } else {
+          textAddEliminateToCartButton.textContent = 1;
+        }
         addEliminateToCartButton.append(textAddEliminateToCartButton)
 
         const imgAddToCart = document.createElement('img')
@@ -301,12 +291,166 @@ const addCardProduct = (productsList) => {
     })
 }
 
-const addProductToYourCart = () => {
+//ver donde ejecutar la función para que lo haga bien
+const generateEmptyCart = () => {
   let fragment = document.createDocumentFragment()
-  productsGrid.textContent = ''
+  cartContainerElement.textContent = ''
+  //TITULO PRINCIPAL
+  const yourCartTitle = document.createElement('h2')
+  yourCartTitle.textContent = `Your cart (${cartList.length})`
+  yourCartTitle.classList.add('title-l')
+  //FIN TITULO PRINCIPAL
+
+  //CARRITO VACÍO
+  const emptyCartContainer = document.createElement('div')
+  emptyCartContainer.classList.add('empty-cart-container')
+  emptyCartContainer.dataset.cart = 'empty'
+
+  const imgEmptyCart = document.createElement('img')
+  imgEmptyCart.src = './assets/images/icons/illustration-empty-cart.svg'
+  emptyCartContainer.append(imgEmptyCart)
+
+  const subtitleEmptyCart = document.createElement('p')
+  subtitleEmptyCart.classList.add('subtitle')
+  subtitleEmptyCart.textContent = 'Your added items will appear here'
+  emptyCartContainer.append(subtitleEmptyCart)
+
+  fragment.prepend(emptyCartContainer)
+  fragment.prepend(yourCartTitle)
+  //FIN CARRITO VACÍO
+
+  cartContainerElement.append(fragment)
+}
+const generateFullCart = () => {
+  let fragment = document.createDocumentFragment()
+  cartContainerElement.textContent = ''
+
+  const totalPricePerProduct = cartProduct.price * cartProduct.quantity
+
+  //TITULO PRINCIPAL
+  const yourCartTitle = document.createElement('h2')
+  yourCartTitle.textContent = `Your cart (${cartList.length})`
+  yourCartTitle.classList.add('title-l')
+  fragment.append(yourCartTitle)
+  //FIN TITULO PRINCIPAL
+  
+  //CARRITO LLENO
+  const fullCartContainer = document.createElement('div')
+  fullCartContainer.classList.add('full-cart-container')
+  fullCartContainer.dataset.cart = 'full'
+
+  cartList.forEach(cartProduct => {
+    //GRUPO DE PEDIDO
+  const cartProductContainer = document.createElement('div')
+  cartProductContainer.classList.add('cart-product-container')
+
+  //GRUPO DATOS PRODUCTO
+  const productTextContainer = document.createElement('div')
+  productTextContainer.classList.add('text-full-cart-container')
+
+  //NOMBRE PRODUCTO
+  const productText = document.createElement('div')
+  productText.classList.add('title-s')
+  productText.textContent = cartProduct.title
+  productTextContainer.append(productText)
+  //FIN NOMBRE PRODUCTO
+
+  //SUBTEXTOS PRODUCTO
+  const subtitleFullCartContainer = document.createElement('div')
+  subtitleFullCartContainer.classList.add('subtitle-full-cart-container')
+
+  const amountProducts = document.createElement('span')
+  amountProducts.classList.add('subtitle')
+  amountProducts.classList.add('featured-text')
+  amountProducts.textContent = `x${cartProduct.quantity}`
+  subtitleFullCartContainer.append(amountProducts)
+
+  const unitPrice = document.createElement('span')
+  unitPrice.classList.add('category-text')
+  unitPrice.textContent = `${cartProduct.price}$ ud`
+  subtitleFullCartContainer.append(unitPrice)
+  const totalPrice = document.createElement('span')
+  totalPrice.classList.add('subtitle')
+  totalPrice.textContent = `${totalPricePerProduct}$ total`
+  subtitleFullCartContainer.append(totalPrice)
+
+  productTextContainer.append(subtitleFullCartContainer);
+  //FIN SUBTEXTOS PRODUCTO
+
+  cartProductContainer.append(productTextContainer)
+  //FIN GRUPO DATOS PRODUCTO
+
+  //BOTÓN ELIMINAR PRODUCTO
+  const eliminateCartProductButton = document.createElement('div')
+  eliminateCartProductButton.classList.add('circle')
+  eliminateCartProductButton.classList.add('brown-circle')
+  eliminateCartProductButton.classList.add('eliminate-button-full-cart-container')
+  cartProductContainer.append(eliminateCartProductButton)
+  //FIN BOTÓN ELIMINAR PRODUCTO
+
+  fullCartContainer.append(cartProductContainer)
+  //FIN GRUPO DE PEDIDO
+  })
+  
+
+  //PRECIO TOTAL COMPRA
+  const totalOrderContainer = document.createElement('div')
+  totalOrderContainer.classList.add('total-order-container')
+
+  const totalOrderText = document.createElement('span')
+  totalOrderText.classList.add('category-text')
+  totalOrderText.classList.add('dark-text')
+  totalOrderText.textContent = 'Order Total'
+  totalOrderContainer.append(totalOrderText)
+
+  const totalOrderPrice = document.createElement('span')
+  totalOrderPrice.classList.add('title-m')
+  totalOrderPrice.textContent = 'Precio'
+  totalOrderContainer.append(totalOrderPrice)
+
+  fullCartContainer.append(totalOrderContainer)
+  //FIN PRECIO TOTAL COMPRA
+
+  //ETIQUETA HUELLA DE CARBONO
+  const carbonLabelContainer = document.createElement('div')
+  carbonLabelContainer.classList.add('carbon-label-container')
+
+  const imgCarbonLabel = document.createElement('img')
+  imgCarbonLabel.src = './assets/images/icons/icon-carbon-neutral.svg'
+  carbonLabelContainer.append(imgCarbonLabel)
+
+  const textCarbonLabel = document.createElement('span')
+  textCarbonLabel.classList.add('category-text')
+  textCarbonLabel.classList.add('dark-text')
+  textCarbonLabel.textContent = 'This is a '
+
+  const remarkedTextCarbonLabel = document.createElement('span')
+  remarkedTextCarbonLabel.classList.add('subtitle')
+  remarkedTextCarbonLabel.classList.add('dark-text')
+  remarkedTextCarbonLabel.textContent = 'carbon-neutral delivery'
+  textCarbonLabel.append(remarkedTextCarbonLabel)
+  // COMO PONER TODO MENOS EL DELIVERY EN NEGRITA
+  carbonLabelContainer.append(textCarbonLabel)
+
+  fullCartContainer.append(carbonLabelContainer)
+  //FIN ETIQUETA HUELLA CARBONO
+
+  //BOTÓN CONFIRMAR COMPRA
+  const confirmOrderButton = document.createElement('button')
+  confirmOrderButton.classList.add('button-selected')
+  confirmOrderButton.classList.add('button')
+  confirmOrderButton.classList.add('confirm-order-button-container')
+  confirmOrderButton.textContent = 'Confirm Order'
+  fullCartContainer.append(confirmOrderButton)
+  //FIN BOTÓN CONFIRMAR COMPRA
+
+  //FIN CARRITO LLENO
+  fragment.append(fullCartContainer)
+  cartContainerElement.append(fragment)
 }
 
 addCardProduct(PRODUCTS)
+generateEmptyCart()
 
 filtersContainerElement.addEventListener('click', defineFilters)
 
