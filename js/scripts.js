@@ -106,16 +106,25 @@ const PRODUCTS = [
 let cartList = []
 let quantityValue = 1;
 
+const productQuantity = (product) => {
+
+  const addedQuantityProduct = {...product, quantity: 0}
+  return product.quantity
+  
+}
+
 const changeAddToCartButton = (event, product) => {
   let buttonClickedElement = event.target
   let textButtonElement = buttonClickedElement.nextSibling.children[1]
+  
+  quantityValue = 1
+  product.quantity = quantityValue
 
   buttonClickedElement.classList.add('hide')
   buttonClickedElement.nextSibling.classList.remove('hide')
-  textButtonElement.textContent = quantityValue
+  textButtonElement.textContent = product.quantity
 
-  const addedQuantityProduct = {...product, quantity: 1}
-  cartList.push(addedQuantityProduct)
+  cartList.push(product)
 }
 
 const addQuantity = (event, product) => {
@@ -141,32 +150,20 @@ const removeQuantity = (event, product) => {
     cartProduct.id === product.id)
 
   if (removeButtonClicked === 'remove'){
-    foundProduct.quantity -= quantityValue
+    foundProduct.quantity --
   }
   holeButton.children[1].textContent = foundProduct.quantity
-
+  
   if (foundProduct.quantity === 0){
     holeButton.classList.add('hide')
     holeButton.previousElementSibling.classList.remove('hide')
-    cartList.filter(product => {
-      if (product !== foundProduct) return product
-  })
+    cartList = cartList.filter(product => product.id !== foundProduct.id)
   }
 }
 
 const defineIfProductIsInCart = (product) => {
-
-  cartList.find(cartProduct => {
-    if (cartProduct.id === product.id){
-      console.log('hola');
-      return true
-      
-    } else {console.log('adios');
-      return false
-    }
-    })
-    
-    
+  const result = cartList.find(cartProduct => cartProduct.id === product.id)
+  return result  
 }
 
 const defineFilters = (event) => {
@@ -197,7 +194,6 @@ const addCardProduct = (productsList) => {
         
         const article = document.createElement('article')
         article.classList.add('dessert-card')
-        //ver donde tengo que poner el id para que identifique bien el producto.
         
         //PARTE SUPERIOR CARD
         const topCardGroup = document.createElement('div')
@@ -228,9 +224,6 @@ const addCardProduct = (productsList) => {
         addToCartButton.classList.add('card-button')
         let productInCart = defineIfProductIsInCart(product)
         if (productInCart){addToCartButton.classList.add('hide')}
-
-        console.log(productInCart);
-        
         
         const imgAddToCartButton = document.createElement('img')
         imgAddToCartButton.src = './assets/images/icons/icon-add-to-cart.svg'
@@ -265,7 +258,7 @@ const addCardProduct = (productsList) => {
         
     
         const textAddEliminateToCartButton = document.createElement('span')
-        textAddEliminateToCartButton.textContent = 'Número'
+        textAddEliminateToCartButton.textContent = productQuantity(product)
         addEliminateToCartButton.append(textAddEliminateToCartButton)
 
         const imgAddToCart = document.createElement('img')
