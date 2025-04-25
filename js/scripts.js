@@ -105,6 +105,37 @@ const PRODUCTS = [
 ]
 let cartList = []
 
+//cuando elimino el producto de la lista se tiene que eliminar también del quantity, y representarse en el botón.
+
+const totalOrderedPrice = () => {
+
+  if (cartList.length === 0){
+    generateEmptyCart()
+  } else {
+    const productFinalPrice = cartList.map(cartProduct => {
+      return cartProduct.price * cartProduct.quantity})
+  
+    const finalOrderPrice = productFinalPrice.reduce((acc, number) => {
+      return acc + number})
+
+    return finalOrderPrice
+  }
+}
+
+const eliminateCartProduct = (cartProduct) => {
+  //identificar el botón
+  //let holeButton = removeButtonElement.parentElement
+  
+  //holeButton.classList.add('hide')
+  //holeButton.previousElementSibling.classList.remove('hide')
+
+  cartList = cartList.filter(product => product.id !== cartProduct.id)
+  
+  if (cartList.length === 0){
+    generateEmptyCart()
+  } else {generateEmptyCart()}
+}
+
 const changeAddToCartButton = (event, product) => {
   let buttonClickedElement = event.target
   let textButtonElement = buttonClickedElement.nextSibling.children[1]
@@ -145,6 +176,17 @@ const removeQuantity = (event, product) => {
     cartList = cartList.filter(product => product.id !== foundProduct.id)
     generateEmptyCart()
   } else {generateFullCart()}
+}
+
+const defineAmountOfProduct = () => {
+
+  if (cartList.length === 0){
+    generateEmptyCart()
+  } else {
+    let amountOfEachProduct = cartList.map(cartProduct => {
+    return cartProduct.quantity})
+    const totalAmountProducts = amountOfEachProduct.reduce((acc, number) => {return acc + number})
+    return totalAmountProducts}
 }
 
 const defineIfProductIsInCart = (product) => {
@@ -291,13 +333,12 @@ const addCardProduct = (productsList) => {
     })
 }
 
-//ver donde ejecutar la función para que lo haga bien
 const generateEmptyCart = () => {
   let fragment = document.createDocumentFragment()
   cartContainerElement.textContent = ''
   //TITULO PRINCIPAL
   const yourCartTitle = document.createElement('h2')
-  yourCartTitle.textContent = `Your cart (${cartList.length})`
+  yourCartTitle.textContent = `Your cart (0)`
   yourCartTitle.classList.add('title-l')
   //FIN TITULO PRINCIPAL
 
@@ -321,13 +362,14 @@ const generateEmptyCart = () => {
 
   cartContainerElement.append(fragment)
 }
+
 const generateFullCart = () => {
   let fragment = document.createDocumentFragment()
   cartContainerElement.textContent = ''
 
   //TITULO PRINCIPAL
   const yourCartTitle = document.createElement('h2')
-  yourCartTitle.textContent = `Your cart (${cartList.length})`
+  yourCartTitle.textContent = `Your cart (${defineAmountOfProduct()})`
   yourCartTitle.classList.add('title-l')
   fragment.append(yourCartTitle)
   //FIN TITULO PRINCIPAL
@@ -339,59 +381,60 @@ const generateFullCart = () => {
 
   cartList.forEach(cartProduct => {
     //GRUPO DE PEDIDO
-  const cartProductContainer = document.createElement('div')
-  cartProductContainer.classList.add('cart-product-container')
+    const cartProductContainer = document.createElement('div')
+    cartProductContainer.classList.add('cart-product-container')
 
-  //GRUPO DATOS PRODUCTO
-  const productTextContainer = document.createElement('div')
-  productTextContainer.classList.add('text-full-cart-container')
+    //GRUPO DATOS PRODUCTO
+    const productTextContainer = document.createElement('div')
+    productTextContainer.classList.add('text-full-cart-container')
 
-  //NOMBRE PRODUCTO
-  const productText = document.createElement('div')
-  productText.classList.add('title-s')
-  productText.textContent = cartProduct.title
-  productTextContainer.append(productText)
-  //FIN NOMBRE PRODUCTO
+    //NOMBRE PRODUCTO
+    const productText = document.createElement('div')
+    productText.classList.add('title-s')
+    productText.textContent = cartProduct.title
+    productTextContainer.append(productText)
+    //FIN NOMBRE PRODUCTO
 
-  //SUBTEXTOS PRODUCTO
-  const subtitleFullCartContainer = document.createElement('div')
-  subtitleFullCartContainer.classList.add('subtitle-full-cart-container')
+    //SUBTEXTOS PRODUCTO
+    const subtitleFullCartContainer = document.createElement('div')
+    subtitleFullCartContainer.classList.add('subtitle-full-cart-container')
 
-  const amountProducts = document.createElement('span')
-  amountProducts.classList.add('subtitle')
-  amountProducts.classList.add('featured-text')
-  amountProducts.textContent = `x${cartProduct.quantity}`
-  subtitleFullCartContainer.append(amountProducts)
+    const amountProducts = document.createElement('span')
+    amountProducts.classList.add('subtitle')
+    amountProducts.classList.add('featured-text')
+    amountProducts.textContent = `x${cartProduct.quantity}`
+    subtitleFullCartContainer.append(amountProducts)
 
-  const unitPrice = document.createElement('span')
-  unitPrice.classList.add('category-text')
-  unitPrice.textContent = `${cartProduct.price}$ ud`
-  subtitleFullCartContainer.append(unitPrice)
-  const totalPrice = document.createElement('span')
-  totalPrice.classList.add('subtitle')
+    const unitPrice = document.createElement('span')
+    unitPrice.classList.add('category-text')
+    unitPrice.textContent = `${cartProduct.price}$ ud`
+    subtitleFullCartContainer.append(unitPrice)
+    const totalPrice = document.createElement('span')
+    totalPrice.classList.add('subtitle')
 
-  const calculatedPrice = cartProduct.price * cartProduct.quantity
-  totalPrice.textContent = `${calculatedPrice}$ total`
-  subtitleFullCartContainer.append(totalPrice)
+    //Aquí se pone esto? si llamo a una función no me lo hace por que no está el cartProduct.
+    const calculatedPrice = cartProduct.price * cartProduct.quantity
+    totalPrice.textContent = `${calculatedPrice}$ total`
+    subtitleFullCartContainer.append(totalPrice)
 
-  productTextContainer.append(subtitleFullCartContainer);
-  //FIN SUBTEXTOS PRODUCTO
+    productTextContainer.append(subtitleFullCartContainer);
+    //FIN SUBTEXTOS PRODUCTO
 
-  cartProductContainer.append(productTextContainer)
-  //FIN GRUPO DATOS PRODUCTO
+    cartProductContainer.append(productTextContainer)
+    //FIN GRUPO DATOS PRODUCTO
 
-  //BOTÓN ELIMINAR PRODUCTO
-  const eliminateCartProductButton = document.createElement('div')
-  eliminateCartProductButton.classList.add('circle')
-  eliminateCartProductButton.classList.add('brown-circle')
-  eliminateCartProductButton.classList.add('eliminate-button-full-cart-container')
-  cartProductContainer.append(eliminateCartProductButton)
-  //FIN BOTÓN ELIMINAR PRODUCTO
+    //BOTÓN ELIMINAR PRODUCTO
+    const eliminateCartProductButton = document.createElement('div')
+    eliminateCartProductButton.classList.add('circle')
+    eliminateCartProductButton.classList.add('brown-circle')
+    eliminateCartProductButton.classList.add('eliminate-button-full-cart-container')
+    eliminateCartProductButton.addEventListener('click', () => eliminateCartProduct(cartProduct))
+    cartProductContainer.append(eliminateCartProductButton)
+    //FIN BOTÓN ELIMINAR PRODUCTO
 
-  fullCartContainer.append(cartProductContainer)
-  //FIN GRUPO DE PEDIDO
+    fullCartContainer.append(cartProductContainer)
+    //FIN GRUPO DE PEDIDO
   })
-  
 
   //PRECIO TOTAL COMPRA
   const totalOrderContainer = document.createElement('div')
@@ -405,7 +448,7 @@ const generateFullCart = () => {
 
   const totalOrderPrice = document.createElement('span')
   totalOrderPrice.classList.add('title-m')
-  totalOrderPrice.textContent = 'Precio'
+  totalOrderPrice.textContent = `${totalOrderedPrice()}$`
   totalOrderContainer.append(totalOrderPrice)
 
   fullCartContainer.append(totalOrderContainer)
