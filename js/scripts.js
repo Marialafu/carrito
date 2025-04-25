@@ -114,28 +114,37 @@ const changeAddToCartButton = (event, product) => {
   buttonClickedElement.nextSibling.classList.remove('hide')
   textButtonElement.textContent = quantityValue
 
-  const addQuantityProduct = {...product, quantity: 1}
-  cartList.push(addQuantityProduct)
+  const addedQuantityProduct = {...product, quantity: 1}
+  cartList.push(addedQuantityProduct)
 }
 
-const determineQuantity = (event, product) => {
-  let buttonClickedName = event.target.dataset.quantity
-  let buttonClickedElement = event.target
-  let holeButton = buttonClickedElement.parentElement
+const addQuantity = (event, product) => {
+  let addButtonClicked = event.target.dataset.quantity
+  let addButtonElement = event.target
+  let holeButton = addButtonElement.parentElement
   
-  if (!buttonClickedName) return
-  
-  const foundProduct = cartList.find(cartProduct => {
-    if (cartProduct.id === product.id) return cartProduct
-  })
+  const foundProduct = cartList.find(cartProduct => 
+    cartProduct.id === product.id)
 
-  if (buttonClickedName === 'add'){
+  if (addButtonClicked === 'add'){
     foundProduct.quantity += quantityValue
-  } else if (buttonClickedName === 'remove'){
+  }
+  holeButton.children[1].textContent = foundProduct.quantity
+}
+
+const removeQuantity = (event, product) => {
+  let removeButtonClicked = event.target.dataset.quantity
+  let removeButtonElement = event.target
+  let holeButton = removeButtonElement.parentElement
+
+  const foundProduct = cartList.find(cartProduct => 
+    cartProduct.id === product.id)
+
+  if (removeButtonClicked === 'remove'){
     foundProduct.quantity -= quantityValue
   }
   holeButton.children[1].textContent = foundProduct.quantity
-  
+
   if (foundProduct.quantity === 0){
     holeButton.classList.add('hide')
     holeButton.previousElementSibling.classList.remove('hide')
@@ -143,13 +152,22 @@ const determineQuantity = (event, product) => {
       if (product !== foundProduct) return product
   })
   }
-    //no me funciona bien el filtro. Quita todos.
+}
+
+const defineIfProductIsInCart = (product) => {
+
+  cartList.find(cartProduct => {
+    if (cartProduct.id === product.id){
+      console.log('hola');
+      console.log(product);
+      
+    }
+  })
   
-    
-    console.log(cartList);
-    
-  // }
   
+    //hide al bottón de add to cart
+  //hide al botón de sumar y restar 
+    
 }
 
 const defineFilters = (event) => {
@@ -209,6 +227,7 @@ const addCardProduct = (productsList) => {
         addToCartButton.classList.add('button')
         addToCartButton.classList.add('add-to-cart-button')
         addToCartButton.classList.add('card-button')
+        defineIfProductIsInCart(product)
         
         const imgAddToCartButton = document.createElement('img')
         imgAddToCartButton.src = './assets/images/icons/icon-add-to-cart.svg'
@@ -231,7 +250,7 @@ const addCardProduct = (productsList) => {
         addEliminateToCartButton.classList.add('button-selected')
         addEliminateToCartButton.classList.add('card-button')
         addEliminateToCartButton.classList.add('add-eliminate-to-cart-button')
-        addEliminateToCartButton.classList.add('hide')
+        defineIfProductIsInCart(product)
         
 
         const imgRemoveFromCart = document.createElement('img')
@@ -239,6 +258,7 @@ const addCardProduct = (productsList) => {
         imgRemoveFromCart.src = './assets/images/icons/icon-decrement-quantity.svg'
         imgRemoveFromCart.dataset.quantity = 'remove'
         addEliminateToCartButton.append(imgRemoveFromCart)
+        imgRemoveFromCart.addEventListener('click', event => removeQuantity(event, product))
         
     
         const textAddEliminateToCartButton = document.createElement('span')
@@ -250,8 +270,8 @@ const addCardProduct = (productsList) => {
         imgAddToCart.src = './assets/images/icons/icon-increment-quantity.svg'
         imgAddToCart.dataset.quantity = 'add'
         addEliminateToCartButton.append(imgAddToCart)
-        
-        topCardGroup.addEventListener('click', event => determineQuantity(event, product))
+        imgAddToCart.addEventListener('click', event => addQuantity(event, product))
+
         topCardGroup.append(addEliminateToCartButton)
         // FIN BOTÓN SUMAR O RESTAR PRODUCTOS OCULTO
         
