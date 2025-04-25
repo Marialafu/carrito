@@ -325,8 +325,6 @@ const generateFullCart = () => {
   let fragment = document.createDocumentFragment()
   cartContainerElement.textContent = ''
 
-  const totalPricePerProduct = cartProduct.price * cartProduct.quantity
-
   //TITULO PRINCIPAL
   const yourCartTitle = document.createElement('h2')
   yourCartTitle.textContent = `Your cart (${cartList.length})`
@@ -371,7 +369,9 @@ const generateFullCart = () => {
   subtitleFullCartContainer.append(unitPrice)
   const totalPrice = document.createElement('span')
   totalPrice.classList.add('subtitle')
-  totalPrice.textContent = `${totalPricePerProduct}$ total`
+
+  const calculatedPrice = cartProduct.price * cartProduct.quantity
+  totalPrice.textContent = `${calculatedPrice}$ total`
   subtitleFullCartContainer.append(totalPrice)
 
   productTextContainer.append(subtitleFullCartContainer);
