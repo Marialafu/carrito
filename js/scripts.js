@@ -2,6 +2,14 @@ const filtersContainerElement = document.getElementById('filter-buttons-containe
 const productsGrid = document.getElementById('desserts-grid')
 const cartContainerElement = document.getElementById('cart-container')
 
+const titleYourCartElement = document.getElementById('title-your-cart')
+const emptyCartElement = document.getElementById('empty-cart-container')
+const fullCartContainer = document.getElementById('full-cart-container')
+const cartProductsElement = document.getElementById('cart-product-container')
+const totalOrderedPrice = document.getElementById('total-ordered-price')
+
+const confirmOrderButtonElement = document.getElementById('confirm-order-button')
+
 const PRODUCTS = [
   {
     id: '362eb9c8-7d07-476a-891c-7ff627e77070',
@@ -107,7 +115,7 @@ let cartList = []
 
 //cuando elimino el producto de la lista se tiene que eliminar también del quantity, y representarse en el botón.
 
-const totalOrderedPrice = () => {
+const getTotalOrderedPrice = () => {
 
   if (cartList.length === 0){
     generateEmptyCart()
@@ -125,6 +133,8 @@ const totalOrderedPrice = () => {
 const eliminateCartProduct = (cartProduct) => {
   //identificar el botón
   //let holeButton = removeButtonElement.parentElement
+  console.log(cartProduct);
+  
   
   //holeButton.classList.add('hide')
   //holeButton.previousElementSibling.classList.remove('hide')
@@ -333,60 +343,13 @@ const addCardProduct = (productsList) => {
     })
 }
 
-const generateEmptyCart = () => {
-  let fragment = document.createDocumentFragment()
-  cartContainerElement.textContent = ''
-  //TITULO PRINCIPAL
-  const yourCartTitle = document.createElement('h2')
-  yourCartTitle.textContent = `Your cart (0)`
-  yourCartTitle.classList.add('title-l')
-  //FIN TITULO PRINCIPAL
-
-  //CARRITO VACÍO
-  const emptyCartContainer = document.createElement('div')
-  emptyCartContainer.classList.add('empty-cart-container')
-  emptyCartContainer.dataset.cart = 'empty'
-
-  const imgEmptyCart = document.createElement('img')
-  imgEmptyCart.src = './assets/images/icons/illustration-empty-cart.svg'
-  emptyCartContainer.append(imgEmptyCart)
-
-  const subtitleEmptyCart = document.createElement('p')
-  subtitleEmptyCart.classList.add('subtitle')
-  subtitleEmptyCart.textContent = 'Your added items will appear here'
-  emptyCartContainer.append(subtitleEmptyCart)
-
-  fragment.prepend(emptyCartContainer)
-  fragment.prepend(yourCartTitle)
-  //FIN CARRITO VACÍO
-
-  cartContainerElement.append(fragment)
-}
-
 const generateFullCart = () => {
   let fragment = document.createDocumentFragment()
-  cartContainerElement.textContent = ''
-
-  //TITULO PRINCIPAL
-  const yourCartTitle = document.createElement('h2')
-  yourCartTitle.textContent = `Your cart (${defineAmountOfProduct()})`
-  yourCartTitle.classList.add('title-l')
-  fragment.append(yourCartTitle)
-  //FIN TITULO PRINCIPAL
-  
-  //CARRITO LLENO
-  const fullCartContainer = document.createElement('div')
-  fullCartContainer.classList.add('full-cart-container')
-  fullCartContainer.dataset.cart = 'full'
+  cartProductsElement.textContent = ''
 
   cartList.forEach(cartProduct => {
-    //GRUPO DE PEDIDO
-    const cartProductContainer = document.createElement('div')
-    cartProductContainer.classList.add('cart-product-container')
-
-    //GRUPO DATOS PRODUCTO
-    const productTextContainer = document.createElement('div')
-    productTextContainer.classList.add('text-full-cart-container')
+    const textContainer = document.createElement('div')
+    textContainer.classList.add('text-full-cart-container')
 
     //NOMBRE PRODUCTO
     const productText = document.createElement('div')
@@ -416,12 +379,10 @@ const generateFullCart = () => {
     const calculatedPrice = cartProduct.price * cartProduct.quantity
     totalPrice.textContent = `${calculatedPrice}$ total`
     subtitleFullCartContainer.append(totalPrice)
+    //FIN SUBTEXTOS
 
-    productTextContainer.append(subtitleFullCartContainer);
-    //FIN SUBTEXTOS PRODUCTO
-
-    cartProductContainer.append(productTextContainer)
-    //FIN GRUPO DATOS PRODUCTO
+    fragment.append(textContainer)
+    //FIN GRUPO DE TEXTOS
 
     //BOTÓN ELIMINAR PRODUCTO
     const eliminateCartProductButton = document.createElement('div')
@@ -436,60 +397,7 @@ const generateFullCart = () => {
     //FIN GRUPO DE PEDIDO
   })
 
-  //PRECIO TOTAL COMPRA
-  const totalOrderContainer = document.createElement('div')
-  totalOrderContainer.classList.add('total-order-container')
-
-  const totalOrderText = document.createElement('span')
-  totalOrderText.classList.add('category-text')
-  totalOrderText.classList.add('dark-text')
-  totalOrderText.textContent = 'Order Total'
-  totalOrderContainer.append(totalOrderText)
-
-  const totalOrderPrice = document.createElement('span')
-  totalOrderPrice.classList.add('title-m')
-  totalOrderPrice.textContent = `${totalOrderedPrice()}$`
-  totalOrderContainer.append(totalOrderPrice)
-
-  fullCartContainer.append(totalOrderContainer)
-  //FIN PRECIO TOTAL COMPRA
-
-  //ETIQUETA HUELLA DE CARBONO
-  const carbonLabelContainer = document.createElement('div')
-  carbonLabelContainer.classList.add('carbon-label-container')
-
-  const imgCarbonLabel = document.createElement('img')
-  imgCarbonLabel.src = './assets/images/icons/icon-carbon-neutral.svg'
-  carbonLabelContainer.append(imgCarbonLabel)
-
-  const textCarbonLabel = document.createElement('span')
-  textCarbonLabel.classList.add('category-text')
-  textCarbonLabel.classList.add('dark-text')
-  textCarbonLabel.textContent = 'This is a '
-
-  const remarkedTextCarbonLabel = document.createElement('span')
-  remarkedTextCarbonLabel.classList.add('subtitle')
-  remarkedTextCarbonLabel.classList.add('dark-text')
-  remarkedTextCarbonLabel.textContent = 'carbon-neutral delivery'
-  textCarbonLabel.append(remarkedTextCarbonLabel)
-  // COMO PONER TODO MENOS EL DELIVERY EN NEGRITA
-  carbonLabelContainer.append(textCarbonLabel)
-
-  fullCartContainer.append(carbonLabelContainer)
-  //FIN ETIQUETA HUELLA CARBONO
-
-  //BOTÓN CONFIRMAR COMPRA
-  const confirmOrderButton = document.createElement('button')
-  confirmOrderButton.classList.add('button-selected')
-  confirmOrderButton.classList.add('button')
-  confirmOrderButton.classList.add('confirm-order-button-container')
-  confirmOrderButton.textContent = 'Confirm Order'
-  fullCartContainer.append(confirmOrderButton)
-  //FIN BOTÓN CONFIRMAR COMPRA
-
-  //FIN CARRITO LLENO
-  fragment.append(fullCartContainer)
-  cartContainerElement.append(fragment)
+  cartProductsElement.append(fragment)
 }
 
 addCardProduct(PRODUCTS)

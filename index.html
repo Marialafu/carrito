@@ -21,9 +21,34 @@
           <button data-filter="price" class="filter-button button">Price</button>
       </section>
       <section class="cards-and-cart-container">
+
         <section class="desserts-grid" id="desserts-grid">
         </section>
+
+
         <section class="cart-container" id="cart-container">
+          <h2 class="title-l" id="title-your-cart">Your Cart (0)</h2>
+
+          <section class="empty-cart-container" id="empty-cart-container" data-cart="empty">
+              <img src="./assets/images/icons/illustration-empty-cart.svg" alt="">
+              <p class="subtitle">Your added items will appear here</p>
+          </section>
+
+          <section class="full-cart-container" data-cart="full" id="full-cart-container">
+            <div class="cart-product-container" id="cart-product-container">
+
+            </div>
+            <div class="total-order-container">
+              <span class="category-text dark-text">Order Total</span>
+              <span id="total-ordered-price" class="title-m">Total Ordered Price</span>
+            </div>
+            <div class="carbon-label-container">
+              <img src="./assets/images/icons/icon-carbon-neutral.svg" alt="">
+              <span class="category-text dark-text">This is a <span class="subtitle">carbon-neutral</span> delivery</span>
+            </div>
+            <button class="button button-selected confirm-order-button-container" id="confirm-order-button">Confirm Order</button>
+          </section>
+
         </section>
       </section>
     </main>
