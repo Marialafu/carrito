@@ -125,20 +125,12 @@ const getTotalOrderedPrice = () => {
   
     const finalOrderPrice = productFinalPrice.reduce((acc, number) => {
       return acc + number})
-
+    
     return finalOrderPrice
   }
 }
 
 const eliminateCartProduct = (cartProduct) => {
-  //identificar el botón
-  //let holeButton = removeButtonElement.parentElement
-  console.log(cartProduct);
-  
-  
-  //holeButton.classList.add('hide')
-  //holeButton.previousElementSibling.classList.remove('hide')
-
   cartList = cartList.filter(product => product.id !== cartProduct.id)
   
   if (cartList.length === 0){
@@ -155,7 +147,9 @@ const changeAddToCartButton = (event, product) => {
   textButtonElement.textContent = 1;
 
   cartList.push({...product, quantity:1})
-  generateFullCart()
+  emptyCartElement.classList.add('hide')
+  fullCartContainer.classList.remove('hide')
+  addCardProductToCart()
 }
 
 const addQuantity = (event, product) => {
@@ -167,7 +161,7 @@ const addQuantity = (event, product) => {
 
   foundProduct.quantity ++
   holeButton.children[1].textContent = foundProduct.quantity
-  generateFullCart()
+  addCardProductToCart()
 }
 
 const removeQuantity = (event, product) => {
@@ -184,8 +178,14 @@ const removeQuantity = (event, product) => {
     holeButton.classList.add('hide')
     holeButton.previousElementSibling.classList.remove('hide')
     cartList = cartList.filter(product => product.id !== foundProduct.id)
-    generateEmptyCart()
-  } else {generateFullCart()}
+  }
+
+  if (cartList.length === 0){
+    emptyCartElement.classList.remove('hide')
+    fullCartContainer.classList.add('hide')
+  }
+
+  addCardProductToCart()
 }
 
 const defineAmountOfProduct = () => {
@@ -343,11 +343,12 @@ const addCardProduct = (productsList) => {
     })
 }
 
-const generateFullCart = () => {
+const addCardProductToCart = () => {
   let fragment = document.createDocumentFragment()
   cartProductsElement.textContent = ''
 
   cartList.forEach(cartProduct => {
+    //LOS `PRODUCTOS SE AÑADEN EN ROW, METER EL DIV QUE HACE QUE SE AÑADAN EN COLUMN
     const textContainer = document.createElement('div')
     textContainer.classList.add('text-full-cart-container')
 
@@ -355,7 +356,7 @@ const generateFullCart = () => {
     const productText = document.createElement('div')
     productText.classList.add('title-s')
     productText.textContent = cartProduct.title
-    productTextContainer.append(productText)
+    textContainer.append(productText)
     //FIN NOMBRE PRODUCTO
 
     //SUBTEXTOS PRODUCTO
@@ -374,13 +375,12 @@ const generateFullCart = () => {
     subtitleFullCartContainer.append(unitPrice)
     const totalPrice = document.createElement('span')
     totalPrice.classList.add('subtitle')
-
-    //Aquí se pone esto? si llamo a una función no me lo hace por que no está el cartProduct.
     const calculatedPrice = cartProduct.price * cartProduct.quantity
     totalPrice.textContent = `${calculatedPrice}$ total`
     subtitleFullCartContainer.append(totalPrice)
     //FIN SUBTEXTOS
 
+    textContainer.append(subtitleFullCartContainer)
     fragment.append(textContainer)
     //FIN GRUPO DE TEXTOS
 
@@ -390,18 +390,15 @@ const generateFullCart = () => {
     eliminateCartProductButton.classList.add('brown-circle')
     eliminateCartProductButton.classList.add('eliminate-button-full-cart-container')
     eliminateCartProductButton.addEventListener('click', () => eliminateCartProduct(cartProduct))
-    cartProductContainer.append(eliminateCartProductButton)
+    fragment.append(eliminateCartProductButton)
     //FIN BOTÓN ELIMINAR PRODUCTO
-
-    fullCartContainer.append(cartProductContainer)
-    //FIN GRUPO DE PEDIDO
+    
   })
-
+  //CAMBIAR AQUÍ POR QUE TOTAL ORDERED NO SALE
   cartProductsElement.append(fragment)
+  totalOrderedPrice.textContent = `${getTotalOrderedPrice()}$`
 }
-
 addCardProduct(PRODUCTS)
-generateEmptyCart()
 
 filtersContainerElement.addEventListener('click', defineFilters)
 

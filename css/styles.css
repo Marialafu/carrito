@@ -282,15 +282,14 @@ h1{
   position: relative;
   padding-bottom: 1.875rem;
 }
-/* ESTO NO FUNCIONA */
-.cart-product-container::before{
+/* .cart-product-container::before{
   content: '';
   width: 18.75rem;
   height: 0.125rem;
   background-color: var(--background-color);
   position: absolute;
   top: 4.375rem;
-}
+} */
 .text-full-cart-container{
   display: flex;
   flex-direction: column;
