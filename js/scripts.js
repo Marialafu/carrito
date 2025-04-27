@@ -1,11 +1,10 @@
 const filtersContainerElement = document.getElementById('filter-buttons-container')
 const productsGrid = document.getElementById('desserts-grid')
-const cartContainerElement = document.getElementById('cart-container')
 
 const titleYourCartElement = document.getElementById('title-your-cart')
 const emptyCartElement = document.getElementById('empty-cart-container')
 const fullCartContainer = document.getElementById('full-cart-container')
-const cartProductsElement = document.getElementById('cart-product-container')
+const cartListContainerElement = document.getElementById('cart-list-container')
 const totalOrderedPrice = document.getElementById('total-ordered-price')
 
 const confirmOrderButtonElement = document.getElementById('confirm-order-button')
@@ -115,10 +114,35 @@ let cartList = []
 
 //cuando elimino el producto de la lista se tiene que eliminar también del quantity, y representarse en el botón.
 
+const eliminateCartProduct = (event, cartProduct) => {
+  const textCartItem = event.target.previousElementSibling
+  const cartItemName = textCartItem.children[0].textContent
+  
+  let gridProduct = ''
+  
+  const foundProduct = PRODUCTS.find(product => 
+    cartItemName === product.title)
+
+  for (let i = 0; i < PRODUCTS.length; i++){
+    if (productsGrid.children[i].children[1].children[1].textContent === foundProduct.title){
+      gridProduct = productsGrid.children[i]
+    }
+  }
+
+  const productButtonAddToCart = gridProduct.children[0].children[1]
+  const productButtonRemoveFromCart = gridProduct.children[0].children[2]
+  productButtonRemoveFromCart.classList.add('hide')
+  productButtonAddToCart.classList.remove('hide')
+  
+  cartList = cartList.filter(product => product.id !== cartProduct.id)
+  addCardProductToCart()
+}
+
 const getTotalOrderedPrice = () => {
 
   if (cartList.length === 0){
-    generateEmptyCart()
+    emptyCartElement.classList.remove('hide')
+    fullCartContainer.classList.add('hide')
   } else {
     const productFinalPrice = cartList.map(cartProduct => {
       return cartProduct.price * cartProduct.quantity})
@@ -128,14 +152,6 @@ const getTotalOrderedPrice = () => {
     
     return finalOrderPrice
   }
-}
-
-const eliminateCartProduct = (cartProduct) => {
-  cartList = cartList.filter(product => product.id !== cartProduct.id)
-  
-  if (cartList.length === 0){
-    generateEmptyCart()
-  } else {generateEmptyCart()}
 }
 
 const changeAddToCartButton = (event, product) => {
@@ -345,10 +361,13 @@ const addCardProduct = (productsList) => {
 
 const addCardProductToCart = () => {
   let fragment = document.createDocumentFragment()
-  cartProductsElement.textContent = ''
+  cartListContainerElement.textContent = ''
 
   cartList.forEach(cartProduct => {
-    //LOS `PRODUCTOS SE AÑADEN EN ROW, METER EL DIV QUE HACE QUE SE AÑADAN EN COLUMN
+   
+    const cartProductContainer = document.createElement('div')
+    cartProductContainer.classList.add('cart-product-container')
+
     const textContainer = document.createElement('div')
     textContainer.classList.add('text-full-cart-container')
 
@@ -381,7 +400,7 @@ const addCardProductToCart = () => {
     //FIN SUBTEXTOS
 
     textContainer.append(subtitleFullCartContainer)
-    fragment.append(textContainer)
+    cartProductContainer.append(textContainer)
     //FIN GRUPO DE TEXTOS
 
     //BOTÓN ELIMINAR PRODUCTO
@@ -389,13 +408,15 @@ const addCardProductToCart = () => {
     eliminateCartProductButton.classList.add('circle')
     eliminateCartProductButton.classList.add('brown-circle')
     eliminateCartProductButton.classList.add('eliminate-button-full-cart-container')
-    eliminateCartProductButton.addEventListener('click', () => eliminateCartProduct(cartProduct))
-    fragment.append(eliminateCartProductButton)
+    eliminateCartProductButton.addEventListener('click', () => eliminateCartProduct(event, cartProduct))
+    cartProductContainer.append(eliminateCartProductButton)
     //FIN BOTÓN ELIMINAR PRODUCTO
+
+    fragment.append(cartProductContainer)
     
   })
-  //CAMBIAR AQUÍ POR QUE TOTAL ORDERED NO SALE
-  cartProductsElement.append(fragment)
+  cartListContainerElement.append(fragment)
+
   totalOrderedPrice.textContent = `${getTotalOrderedPrice()}$`
 }
 addCardProduct(PRODUCTS)
